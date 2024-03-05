@@ -5,4 +5,5 @@ src/jupyter_shelf/app.py
 src/jupyter_shelf.egg-info/PKG-INFO
 src/jupyter_shelf.egg-info/SOURCES.txt
 src/jupyter_shelf.egg-info/dependency_links.txt
+src/jupyter_shelf.egg-info/entry_points.txt
 src/jupyter_shelf.egg-info/top_level.txt

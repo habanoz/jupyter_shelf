@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jupyter_shelf"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="habanoz", email="huseyinabanox@gmail.com" },
 ]
@@ -20,3 +20,6 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/habanoz/jupyter_shelf"
 Issues = "https://github.com/habanoz/jupyter_shelf/issues"
+
+[project.scripts]
+shelf = "jupyter_shelf:main"

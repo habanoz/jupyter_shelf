@@ -1,5 +1,6 @@
 __version__ = "0.1.0"
 
-from .app import *
+from .app import main as app_main
 
-main()
+def main():
+    app_main()
