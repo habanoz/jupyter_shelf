@@ -46,7 +46,7 @@ Create a shelf named hf-demo under the given root directory.
 shelf mk hf-demo --root ~/workspace/shelves --python-version 3.11
 ```
 
-This will create `~/workspace/shelves/hf-demo` directory. Initialize a virtual environment there. Install jupyter-lab. And create src directory to keep notebooks. It will also create a virtual environment kernel that shares the same name with the shelf. The kernel is only accessible to jupyter process running in this shelf. 
+This will create `~/workspace/shelves/hf-demo` directory. Initialize a virtual environment there. Install jupyter-lab. And create src directory to keep notebooks. It will also create a virtual environment kernel that shares the same name with the shelf. The kernel is only accessible to jupyter process running in this shelf. Once the jupyter windows is open, look for the kernel named after your shelf name. Select it and start using the virtual environment of the shelf.
 
 `~/workspace/shelves` is the default shelf root and can be omitted. A typical usage would look like this:
 
