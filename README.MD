@@ -66,7 +66,7 @@ Following command will start jupyter lab in the given shelf.
 shelf start hf-demo --root ~/workspace/shelves --port 8888
 ```
 
-Jupyter-lab will start in `src` sub-directory of the shelf. `8888` is the default port jupyter and can be omitted. If collusion occurs, jupyter will try next port. So typical usage would look like this:
+Jupyter-lab will start in `src` sub-directory of the shelf. `8888` is the default port used by jupyter and can be omitted. If collusion occurs, jupyter will try next port. So typical usage would look like this:
 ```bash
 shelf start hf-demo
 ```
