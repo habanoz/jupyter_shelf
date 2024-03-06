@@ -37,6 +37,21 @@ options:
   -h, --help            show this help message and exit
 ```
 
+#### Trouble shooting
+
+It is recommended to install and use shelf command in a virtual environment. 
+
+Outside of the virtual environment it is possible to use the shelf command but you may experience issues due to your system configuration or pip behavior. If you install outside a virtual environment and shelf command does not work, then your will need to find the shelf script and add it to path variable.
+
+```bash
+pip3 show jupyter_shelf
+```
+In may case it was installed under `/home/<user.home>/.local/lib/python3.10/site-packages` directory. Then shelf script is found under `/home/<user.home>/.local/bin/` directory. Adding this directory to path variable should fix the problem.
+Edit your `.bashrc` file to add following line.
+```bash
+export PATH=$PATH:/home/<user.home>/.local/bin/
+```
+
 ### How to use?
 
 #### Make a shelf
