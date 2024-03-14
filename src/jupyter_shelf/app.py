@@ -42,8 +42,7 @@ def print_process_output(process, out, err):
 
 def list_shelf(args):
     expanded_root = os.path.expanduser(args.root)
-    shelves = [os.path.basename(dirpath) for dirpath, _, filenames in os.walk(
-        expanded_root) if SHELF_FILE in filenames]
+    shelves = [os.path.basename(dirpath) for dirpath, subdirs, _ in os.walk(expanded_root) if CFG_DIR_NAME in subdirs]
     print_list(shelves)
 
 
