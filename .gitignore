@@ -1,2 +1,5 @@
 venv/*
 dist/*
+build/*
+dist/*
+src/jupyter_shelf.egg-info/*

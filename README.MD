@@ -39,18 +39,9 @@ options:
 
 #### Trouble shooting
 
-It is recommended to install and use shelf command in a virtual environment. 
+During installation, if a virtual environment is used or a conda distribution is used, shelf executable should end up in the system path. In other situations, shelf executable may be put in a location that is not in the system path. As a precaution, `~/.bashrc` file is modified such that `~/.local/bin/` is added to the PATH variable.
 
-Outside of the virtual environment it is possible to use the shelf command but you may experience issues due to your system configuration or pip behavior. If you install outside a virtual environment and shelf command does not work, then your will need to find the shelf script and add it to path variable.
-
-```bash
-pip3 show jupyter_shelf
-```
-In may case it was installed under `/home/<user.home>/.local/lib/python3.10/site-packages` directory. Then shelf script is found under `/home/<user.home>/.local/bin/` directory. Adding this directory to path variable should fix the problem.
-Edit your `.bashrc` file to add following line.
-```bash
-export PATH=$PATH:/home/<user.home>/.local/bin/
-```
+If you experience `shelf: command not found` errors, you may need to find shelf executable and put it to your PATH.
 
 ### How to use?
 
@@ -61,7 +52,7 @@ Create a shelf named hf-demo under the given root directory.
 shelf mk hf-demo --root ~/workspace/shelves --python-version 3.11
 ```
 
-This will create `~/workspace/shelves/hf-demo` directory. Initialize a virtual environment there. Install jupyter-lab. And create src directory to keep notebooks. It will also create a virtual environment kernel that shares the same name with the shelf. The kernel is only accessible to jupyter process running in this shelf. Once the jupyter windows is open, look for the kernel named after your shelf name. Select it and start using the virtual environment of the shelf.
+This will create `~/workspace/shelves/hf-demo` directory. Initialize a virtual environment there. Install jupyter-lab. And create src directory to keep notebooks.
 
 `~/workspace/shelves` is the default shelf root and can be omitted. A typical usage would look like this:
 
@@ -95,6 +86,21 @@ Following command will remove a shelf directory.
 shelf rm hf-demo --root ~/workspace/shelves
 ```
 This command will not remove `src` directory if it contains any files. This is to ensure your source files are not wasted. This command does not have an override option. If you are sure about deleting your source files, you will need to do it manually.
+
+
+## Commands to publish
+
+Make sure you are up-to-date.
+```bash
+python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade build
+python3 -m pip install --upgrade twine
+```
+Build and publish
+```bash
+python3 -m build
+python3 -m twine upload --repository pypi dist/*
+```
 
 ## References
 1. [Packaging](https://packaging.python.org/en/latest/tutorials/packaging-projects/)

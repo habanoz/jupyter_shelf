@@ -6,8 +6,9 @@ import textwrap
 VENV_DIR = ".venv"
 SRC_DIR = "src"
 SHELF_ROOT = "~/workspace/shelves"
-SAFE_TEXT_EXT = "stxt"
-SHELF_FILE = f"shelf.{SAFE_TEXT_EXT}"
+CFG_DIR_NAME=".shelf"
+SAFE_TEXT_EXT = "txt"
+SHELF_FILE = f"{CFG_DIR_NAME}/shelf.{SAFE_TEXT_EXT}"
 
 
 def make_shelf(args):
@@ -16,8 +17,8 @@ def make_shelf(args):
     commands = f"""
     python{args.python_version} -m venv {VENV_DIR} && echo 'Virtual environment created successfully.' || (echo 'Failed to create virtual environment.' && exit 1)
     source {VENV_DIR}/bin/activate && echo 'Virtual environment activated successfully.' || (echo 'Failed to activate virtual environment.' && exit 1)
-    pip install jupyterlab &> install_log.{SAFE_TEXT_EXT}  && echo 'Jupyter Lab installed successfully.' || (echo 'Failed to install Jupyter Lab.' && exit 1)
-    python -m ipykernel install --prefix=./{VENV_DIR} --name={args.shelf} && echo 'Kernel installed successfully.' || (echo 'Failed to install kernel.' && exit 1)
+    mkdir {CFG_DIR_NAME}
+    pip install jupyterlab &> {CFG_DIR_NAME}/install_log.{SAFE_TEXT_EXT}  && echo 'Jupyter Lab installed successfully.' || (echo 'Failed to install Jupyter Lab.' && exit 1)
     mkdir {SRC_DIR}
     touch {SHELF_FILE}
     """
@@ -114,6 +115,18 @@ def start_jupyter(args):
         process.wait()
         print("Process terminated due to keyboard interrupt.")
 
+def start_code(args):
+    shelf_path = get_shelf_path(args)
+
+    commands = f"""
+    code -n .
+    """
+    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=shelf_path)
+    out, err = process.communicate(commands.encode('utf-8'))
+
+    print_process_output(process, out, err)
+
 
 def stop_jupyter(args):
     # Stop the Jupyter notebook server
@@ -125,8 +138,10 @@ def rm_shelf(args):
 
     commands = f"""
     rm -rf {VENV_DIR} && echo 'Virtual environment removed successfully.' || (echo 'Failed to remove virtual environment.' && exit 1)
+    rm -rf {SRC_DIR}/.[^.]* {SRC_DIR} /.??* && echo 'Hidden elements in the source directory removed successfully.' || (echo 'Failed to remove hidden elements in the source directory.' && exit 1)
     rmdir {SRC_DIR} && echo 'Source directory removed successfully.' || (echo 'Failed to remove source directory. Make sure it is empty.' && exit 1)
-    rm -f *.{SAFE_TEXT_EXT} && echo 'Text files removed successfully.' || (echo 'Failed to remove text files.' && exit 1)
+    rm -f {CFG_DIR_NAME}/*.{SAFE_TEXT_EXT} && echo 'Text files removed successfully.' || (echo 'Failed to remove text files.' && exit 1)
+    rmdir {CFG_DIR_NAME} && echo 'Shelf config directory removed successfully.' || (echo 'Failed to remove shelf config directory. Make sure it is empty.' && exit 1)
     cd ..
     rmdir {args.shelf} && echo 'Shelf directory removed successfully.' || (echo 'Failed to remove shelf directory. Make sure it is empty.' && exit 1)
     """
@@ -188,6 +203,11 @@ def main():
         p.add_argument('--root','-R', **root_args)
         p.add_argument('--port', type=int, default=8888)
         p.set_defaults(func=start_jupyter)
+
+    with add_sub_parser(subparsers, 'start_code', {'help':"Start vs code in the specified shelf."}) as p:
+        p.add_argument('shelf', **shelf_arg)
+        p.add_argument('--root','-R', **root_args)
+        p.set_defaults(func=start_code)
 
     with add_sub_parser(subparsers, 'stop', {'help':"Stop jupyter lab running in the specified shelf."}) as p:
         p.add_argument('shelf', **shelf_arg)
